@@ -44,7 +44,12 @@ RUN dnf update -y && dnf install -y --setopt=tsflags=nodocs \
       xz-devel \
       ShellCheck \
       hadolint \
+      which \
       && dnf clean all
+
+# Install rover for GraphQL federated schema manipulation
+RUN curl -sSL https://rover.apollo.dev/nix/latest | sh \
+    && export PATH="$HOME/.rover/bin:$PATH"
 
 # switch to Python 3.9
 RUN git clone https://github.com/pyenv/pyenv.git /pyenv
