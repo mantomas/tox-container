@@ -46,6 +46,14 @@ RUN dnf update -y && dnf install -y --setopt=tsflags=nodocs \
       hadolint \
       && dnf clean all
 
+# Install rover for GraphQL federated schema manipulation
+ENV ROVER_VERSION=v0.23.0
+RUN mkdir -p /opt/rover-$ROVER_VERSION \
+    && curl -sSL -o /tmp/rover-$ROVER_VERSION.tar.gz https://github.com/apollographql/rover/releases/download/$ROVER_VERSION/rover-$ROVER_VERSION-x86_64-unknown-linux-gnu.tar.gz \
+    && tar -xvzf /tmp/rover-$ROVER_VERSION.tar.gz -C /opt/rover-$ROVER_VERSION \
+    && rm /tmp/rover-$ROVER_VERSION.tar.gz \
+    && ln -fs /opt/rover-$ROVER_VERSION/dist/rover /usr/local/bin/rover
+
 # switch to Python 3.9
 RUN git clone https://github.com/pyenv/pyenv.git /pyenv
 ENV PYENV_ROOT /pyenv
